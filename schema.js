@@ -20,7 +20,6 @@ const typeDefs = `
     posts: [Post]
     user(userID: Int!): User
   }
-  
 `;
 
 const resolvers = {
