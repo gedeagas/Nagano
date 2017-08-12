@@ -24,11 +24,34 @@ const User = connection.define('user', {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  desc: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
+  avatar: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
   email: {
     type: Sequelize.STRING,
     validate: {
       isEmail: true,
     },
+  },
+});
+
+const Link = connection.define('link', {
+  title: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  protected: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+  },
+  password: {
+    type: Sequelize.STRING,
+    allowNull: true,
   },
 });
 
@@ -43,9 +66,14 @@ const Post = connection.define('post', {
   },
 });
 
+
+
 // Relations
 User.hasMany(Post);
+User.hasMany(Link);
+
 Post.belongsTo(User);
+Link.belongsTo(User);
 
 connection.sync({ force: true }).then(() => {
   _.times(10, () => {
@@ -53,10 +81,12 @@ connection.sync({ force: true }).then(() => {
       firstName: Faker.name.firstName(),
       lastName: Faker.name.lastName(),
       email: Faker.internet.email(),
+      avatar: Faker.image.avatar(),
+      desc: Faker.lorem.paragraph(1),
     }).then(user => {
       return user.createPost({
         title: `Sample post by ${user.firstName}`,
-        content: 'here is some content',
+        content: Faker.lorem.paragraph(2),
       });
     });
   });

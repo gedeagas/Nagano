@@ -4,6 +4,7 @@ export const typeDefs = `
     firstName: String
     lastName: String
     email: String
+    avatar: String
     posts: [Post] # the list of Posts by this author
   }
   type Post {
